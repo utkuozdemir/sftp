@@ -15,6 +15,15 @@ RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /et
 COPY sshd_config /etc/ssh/sshd_config
 COPY entrypoint /
 
-EXPOSE 22
+EXPOSE 2222
 
-ENTRYPOINT ["/entrypoint"]
+RUN mkdir -p /etc/sftp/ && \
+    echo "sftp-user:sftp-password:555:555:.pid,upload" > /etc/sftp/users.conf && \
+    /entrypoint echo "created sftp-user..." && \
+    rm /etc/sftp/users.conf && \
+    chown -R 555:555 /etc/ssh && \
+    chown 555:555 /etc/shadow
+
+USER 555
+
+ENTRYPOINT ["/usr/sbin/sshd", "-D", "-e"]

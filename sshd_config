@@ -13,10 +13,13 @@ PermitRootLogin no
 X11Forwarding no
 AllowTcpForwarding no
 
-# Force sftp and chroot jail
+# Force sftp
 Subsystem sftp internal-sftp
 ForceCommand internal-sftp
-ChrootDirectory %h
 
 # Enable this for more logs
 #LogLevel VERBOSE
+
+Port 2222
+UsePrivilegeSeparation no
+PidFile ~/.pid/.sshd.pid
